@@ -1,179 +1,711 @@
-<!doctypehtml>
-    <html lang=EN-us>
+<!DOCTYPE html>
+<html lang="en">
 
-    <head>
-        <meta charset=utf-8>
-        <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
-        <title>Balls simulation</title>
-        <style>
-            body {
-                font-family: arial;
-                margin: 0;
-                padding: none
-            }
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vCard - Personal Portfolio</title>
 
-            #header {
-                width: 100%;
-                height: 80px;
-                background-color: #888
-            }
+  <!--
+    - favicon
+  -->
+  <link rel="shortcut icon" href="./assets/images/logo.ico" type="image/x-icon">
 
-            #logo {
-                width: 64px;
-                height: 64px;
-                float: left;
-                position: relative;
-                margin: 10px;
-                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjExR/NCNwAAA7JJREFUaEPtk0FyWzEMQ+37X7fZhxX4YY3AD1OKF1nkzTRlSBCCLeVBnvl/AUdaELOunPno1kts1kixdtEZKVs+xIxebBkZsVknn/L5nFGDLR8T4zVC9fX19S/+tTFijrYK4jUjbPUtqBHpnEE6PkZD7jQZV8n5Recw1XQKciZuPaEtR6UjNs5ENVGMsBVqpPtER0ZMOhpyp8m4YL4OjD9yxsyZxnQycfMJETNSzsRE1+dihK3YMiJmpHTW3xpmXPC6BXlCHfqnBlsjY5hxf/6EVEOM2BTEi0fYCX4ONSI6Kq3Blg/prIOMq2CsRur4KQ0x64SdjOufEDEdHZGOhmz5RDHCVqhRuQ86YsVskbc+GXchLiHnFyYH+UigQDVGnImbT8hwFkgLg2qiM8JO6Ylx1FNLa3DmYwqCTsZd4BPqGJG7MwKzpeiWKTKxXkLMVE3MSOmsdwxLH6Rd/wCCLSNDx6djeKfJuArGeoYamRHpaEjnCBYZVy8hZqo2GI36qPjsiOiMsBXGcev4Mx9TLGTchbgEjN/uz6jGrBvDjg+LTNx8Qp2CbG2xMKgmOiPslJ4Yxx+eSnSkzlosZNwFPiHl7FRTkLNRJm4+IeVM0ymIH42wE/wcKalQI4MRl4EW3p6VcRWMua8F6WjIlqZDxvVPiHQ6CjVbYkV9ohhhp/Rk1wiYgpyJ78i4CsZbjkb8Qx+ihvzu3RPaKogZkY6GlEeMsKdPSOFIC8VoOusg44L5c+T8ouOoGhWbdWJ8tMi4egkxo4hoh2yNTGf3iIyr5Lyic4bRENXo+lvDjAt4C1Hk/OKtUaAj0+n4dMSZ2D+hrYJsaYh2SClG2jV9kJKKzhlGQ1SsW299Mq6C8dYZHTExo8fzieI5ivipYnYy7nwJqGKmOYyRwfiUBXITfh5qSHRGWEkfqJqURgvsdHyWYv7Ko8DnYYegk3EB00cxprdrJRzFd7YQzawu8L1GMTYS/KpPaAFTkIn1EmJmspJSs5xBzSyGhlkBmlxfNFiP5mw4wlbMh4F5Ddxp5jNINBdCEz9zPOC1zD7Q0HBdmXndwv0TMtydEdzlWJT4VZ8Qt9Qn4/onxMIwa5ZYGJU5yufBiCjwE50AGjLCVuS8Yt4H7OgZLKK5EKOsLviEWJSL/+0uMi7gLUSBseYwqEbXvSHCec1CJvZPyHCmYQffaBBfOTCGHM2aEbZi1+gO1XTWVXMnzrhAn5DSOZVsiQlHnSITKzGj6DeTcZWc/3oy7h9//PF4PL4BlvsWrb6RE+oAAAAASUVORK5CYII=')
-            }
+  <!--
+    - custom css link
+  -->
+  <link rel="stylesheet" href="./assets/css/style.css">
 
-            .emscripten {
-                padding-right: 0;
-                margin-left: auto;
-                margin-right: auto;
-                display: block
-            }
+  <!--
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
 
-            div.emscripten {
-                text-align: center
-            }
+<body>
 
-            div.emscripten_border {
-                border: 1px solid #000
-            }
+  <!--
+    - #MAIN
+  -->
 
-            canvas.emscripten {
-                border: 0 none;
-                background: #000;
-                height: 50%;
-            }
+  <main>
 
-            .spinner {
-                height: 30px;
-                width: 30px;
-                margin: 0;
-                margin-top: 20px;
-                margin-left: 20px;
-                display: inline-block;
-                vertical-align: top;
-                -webkit-animation: rotation .8s linear infinite;
-                -moz-animation: rotation .8s linear infinite;
-                -o-animation: rotation .8s linear infinite;
-                animation: rotation .8s linear infinite;
-                border-left: 5px solid #000;
-                border-right: 5px solid #000;
-                border-bottom: 5px solid #000;
-                border-top: 5px solid red;
-                border-radius: 100%;
-                background-color: #f5f5f5
-            }
+    <!--
+      - #SIDEBAR
+    -->
 
-            @-webkit-keyframes rotation {
-                from {
-                    -webkit-transform: rotate(0)
-                }
+    <aside class="sidebar" data-sidebar>
 
-                to {
-                    -webkit-transform: rotate(360deg)
-                }
-            }
+      <div class="sidebar-info">
 
-            @-moz-keyframes rotation {
-                from {
-                    -moz-transform: rotate(0)
-                }
+        <figure class="avatar-box">
+          <img src="./assets/images/Avatar.png" alt="Richard hanrick" width="80">
+        </figure>
 
-                to {
-                    -moz-transform: rotate(360deg)
-                }
-            }
+        <div class="info-content">
+          <h1 class="name" title="Shubham Solanke">Shubham Solanke</h1>
 
-            @-o-keyframes rotation {
-                from {
-                    -o-transform: rotate(0)
-                }
-
-                to {
-                    -o-transform: rotate(360deg)
-                }
-            }
-
-            @keyframes rotation {
-                from {
-                    transform: rotate(0)
-                }
-
-                to {
-                    transform: rotate(360deg)
-                }
-            }
-
-            #status {
-                display: inline-block;
-                vertical-align: top;
-                margin-top: 30px;
-                margin-left: 20px;
-                font-weight: 700;
-                color: #282828
-            }
-
-            #progress {
-                height: 0;
-                width: 0
-            }
-
-            #controls {
-                display: inline-block;
-                float: right;
-                vertical-align: top;
-                margin-top: 15px;
-                margin-right: 20px
-            }
-
-            #output {
-                width: 100%;
-                height: 140px;
-                margin: 0 auto;
-                margin-top: 10px;
-                display: block;
-                background-color: #000;
-                color: #25ae26;
-                font-family: 'Lucida Console', Monaco, monospace;
-                outline: 0
-            }
-
-            input[type=button] {
-                background-color: #d3d3d3;
-                border: 4px solid #a9a9a9;
-                color: #000;
-                text-decoration: none;
-                cursor: pointer;
-                width: 140px;
-                height: 50px
-            }
-
-            input[type=button]:hover {
-                background-color: #f5f5f5ff;
-                border-color: #000
-            }
-        </style>
-    </head>
-
-    <body>
-        <div id=header>
-            <div class=spinner id=spinner></div>
-            <div class=emscripten id=status>Downloading...</div><span id=controls><span><input
-                        onclick=Module.requestFullscreen(!1,!1) type=button value="🖵 FULLSCREEN"></span><span><input
-                        onclick=toggleAudio() type=button value="🔇 SUSPEND" id=btn-audio></span></span>
-            <div class=emscripten><progress hidden id=progress max=100 value=0></progress></div>
+          <p class="title">Game Developer / Gameplay Programmer</p>
         </div>
-        <div class=emscripten_border><canvas class=emscripten id=canvas oncontextmenu=event.preventDefault()
-                tabindex=-1></canvas></div>
-        <script src=https://cdn.jsdelivr.net/gh/eligrey/FileSaver.js/dist/FileSaver.min.js></script>
-        <script>function saveFileFromMEMFSToDisk(e, a) { var i, o = FS.readFile(e); i = new Blob([o.buffer], { type: "application/octet-binary" }), saveAs(i, a) }</script>
-        <script>var statusElement = document.querySelector("#status"), progressElement = document.querySelector("#progress"), spinnerElement = document.querySelector("#spinner"), Module = { preRun: [], postRun: [], print: function () { var e = document.querySelector("#output"); return e && (e.value = ""), function (t) { arguments.length > 1 && (t = Array.prototype.slice.call(arguments).join(" ")), console.log(t), e && (e.value += t + "\n", e.scrollTop = e.scrollHeight) } }(), printErr: function (e) { arguments.length > 1 && (e = Array.prototype.slice.call(arguments).join(" ")), console.error(e) }, canvas: function () { var e = document.querySelector("#canvas"); return e.addEventListener("webglcontextlost", (function (e) { alert("WebGL context lost. You will need to reload the page."), e.preventDefault() }), !1), e }(), setStatus: function (e) { if (Module.setStatus.last || (Module.setStatus.last = { time: Date.now(), text: "" }), e !== Module.setStatus.last.text) { var t = e.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/), n = Date.now(); t && n - Module.setStatus.last.time < 30 || (Module.setStatus.last.time = n, Module.setStatus.last.text = e, t ? (e = t[1], progressElement.value = 100 * parseInt(t[2]), progressElement.max = 100 * parseInt(t[4]), progressElement.hidden = !0, spinnerElement.hidden = !1) : (progressElement.value = null, progressElement.max = null, progressElement.hidden = !0, e || (spinnerElement.style.display = "none")), statusElement.innerHTML = e) } }, totalDependencies: 0, monitorRunDependencies: function (e) { this.totalDependencies = Math.max(this.totalDependencies, e), Module.setStatus(e ? "Preparing... (" + (this.totalDependencies - e) + "/" + this.totalDependencies + ")" : "All downloads complete.") } }; Module.setStatus("Downloading..."), window.onerror = function () { Module.setStatus("Exception thrown, see JavaScript console"), spinnerElement.style.display = "none", Module.setStatus = function (e) { e && Module.printErr("[post-exception status] " + e) } }</script>
-        <script>var audioBtn = document.querySelector("#btn-audio"); const audioContexList = []; function toggleAudio() { var t = !1; audioContexList.forEach((e => { "suspended" == e.state ? (e.resume(), t = !0) : "running" == e.state && e.suspend() })), audioBtn.value = t ? "🔇 SUSPEND" : "🔈 RESUME" } self.AudioContext = new Proxy(self.AudioContext, { construct(t, e) { const n = new t(...e); return audioContexList.push(n), "suspended" == n.state && (audioBtn.value = "🔈 RESUME"), n } })</script>
-        <script src=balls.js async></script>
-    </body>
 
-    </html>
+        <button class="info_more-btn" data-sidebar-btn>
+          <span>Show Contacts</span>
+
+          <ion-icon name="chevron-down"></ion-icon>
+        </button>
+
+      </div>
+
+      <div class="sidebar-info_more">
+
+        <div class="separator"></div>
+
+        <ul class="contacts-list">
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="mail-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Email</p>
+
+              <a href="mailto:shubham1solanke@gmail.com" class="contact-link">shubham1solanke@gmail.com</a>
+            </div>
+
+          </li>
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="phone-portrait-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Phone</p>
+
+              <a href="tel:+919890590954" class="contact-link">+91 989 059 0954</a>
+            </div>
+
+          </li>
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="logo-github"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">GitHub</p>
+
+              <a href="https://github.com/shubhamsol" class="contact-link">@shubhamsol</a>
+            </div>
+
+          </li>
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="location-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Location</p>
+
+              <address>Pune, India</address>
+            </div>
+
+          </li>
+
+        </ul>
+
+        <div class="separator"></div>
+
+        <ul class="social-list">
+
+          <li class="social-item">
+            <a href="https://in.linkedin.com/in/shubhamsol" class="social-link">
+              <ion-icon name="logo-linkedin"></ion-icon>
+            </a>
+          </li>
+
+          <li class="social-item">
+            <a href="#" class="social-link">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+
+    </aside>
+
+
+
+
+
+    <!--
+      - #main-content
+    -->
+
+    <div class="main-content">
+
+      <!--
+        - #NAVBAR
+      -->
+
+      <nav class="navbar">
+
+        <ul class="navbar-list">
+
+          <li class="navbar-item">
+            <button class="navbar-link  active" data-nav-link>About</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Resume</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Portfolio</button>
+          </li>
+
+          
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Contact</button>
+          </li>
+
+        </ul>
+
+      </nav>
+
+
+
+
+
+      <!--
+        - #ABOUT
+      -->
+
+      <article class="about  active" data-page="about">
+
+        <header>
+          <h2 class="h2 article-title">About me</h2>
+        </header>
+
+        <section class="about-text">
+          <p>
+            Experienced Game Developer / Gameplay Programmer with 4+ years of expertise in the game development space. 
+            Proficient in programming using C# and Unity, specializing in multiplayer game development.
+          </p>
+
+          <p>
+            Known for strong problem solving skills, a keen aptitude for complex tasks, and effective risk management. 
+            Recognized for delivering innovative solutions and optimizing game performance. Dedicated to achieving project 
+            goals and ensuring operational efficiency.
+          </p>
+        </section>
+
+
+        <!--
+          - service
+        -->
+
+        <section class="service">
+
+          <h3 class="h3 service-title">What i'm doing</h3>
+
+          <ul class="service-list">
+
+            <li class="service-item">
+
+              <div class="service-icon-box">
+                <img src="./assets/images/icon-design.svg
+                " alt="design icon" width="40">
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Game Development</h4>
+
+                <p class="service-item-text">
+                  Expertise in Unity3D and C# for creating engaging multiplayer games.
+                </p>
+              </div>
+
+            </li>
+
+            <li class="service-item">
+
+              <div class="service-icon-box">
+                <img src="./assets/images/icon-dev.svg" alt="Development icon" width="40">
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Multiplayer Systems</h4>
+
+                <p class="service-item-text">
+                  Implementation of robust multiplayer features using Photon services.
+                </p>
+              </div>
+
+            </li>
+
+            <li class="service-item">
+
+              <div class="service-icon-box">
+                <img src="./assets/images/icon-app.svg" alt="mobile app icon" width="40">
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Mobile Game Development</h4>
+
+                <p class="service-item-text">
+                  Creation of optimized games for iOS and Android platforms.
+                </p>
+              </div>
+
+            </li>
+
+            <li class="service-item">
+
+              <div class="service-icon-box">
+                <img src="./assets/images/icon-photo.svg" alt="tools icon" width="40">
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Technical Skills</h4>
+
+                <p class="service-item-text">
+                  Proficient in C#, Python, C/C++, JavaScript, and various game engines.
+                </p>
+              </div>
+
+            </li>
+
+          </ul>
+
+        </section>
+
+
+        <!--
+          - testimonials
+        -->
+
+        <section class="testimonials">
+
+
+          <ul class="testimonials-list has-scrollbar">
+
+            
+
+          </ul>
+
+        </section>
+
+
+        <!--
+          - testimonials modal
+        -->
+
+        <div class="modal-container" data-modal-container>
+
+          <div class="overlay" data-overlay></div>
+
+          <section class="testimonials-modal">
+
+            <button class="modal-close-btn" data-modal-close-btn>
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+
+            <div class="modal-img-wrapper">
+              <figure class="modal-avatar-box">
+                <img src="./assets/images/avatar-1.png" alt="Daniel lewis" width="80" data-modal-img>
+              </figure>
+
+              <img src="./assets/images/icon-quote.svg" alt="quote icon">
+            </div>
+
+            <div class="modal-content">
+
+              <h4 class="h3 modal-title" data-modal-title>Daniel lewis</h4>
+
+              <time datetime="2021-06-14">14 June, 2021</time>
+
+              <div data-modal-text>
+                <p>
+                  Richard was hired to create a corporate identity. We were very pleased with the work done. She has a
+                  lot of experience
+                  and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt
+                  consectetur adipiscing
+                  elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+
+
+        <!--
+          - clients
+        -->
+
+        
+      </article>
+
+
+
+
+
+      <!--
+        - #RESUME
+      -->
+
+      <article class="resume" data-page="resume">
+
+        <header>
+          <h2 class="h2 article-title">Resume</h2>
+        </header>
+
+        <section class="timeline">
+
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="book-outline"></ion-icon>
+            </div>
+
+            <h3 class="h3">Education</h3>
+          </div>
+
+          <ol class="timeline-list">
+
+            <li class="timeline-item">
+              <h4 class="h4 timeline-item-title">Dr. D.Y. Patil College of Engineering, Pune</h4>
+              <span>Aug 2017 — July 2021</span>
+              <p class="timeline-text">BE in Computer Engineering</p>
+            </li>
+
+          </ol>
+
+        </section>
+
+        <section class="timeline">
+
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="book-outline"></ion-icon>
+            </div>
+
+            <h3 class="h3">Experience</h3>
+          </div>
+
+          <ol class="timeline-list">
+
+            <li class="timeline-item">
+              <h4 class="h4 timeline-item-title">Unity Developer | OFAI Research LLP</h4>
+              <span>May 2024 — Present</span>
+              <p class="timeline-text">
+                Worked on procedural generation of 3D objects and auto-routing algorithm using custom A* pathfinding algorithm.
+              </p>
+            </li>
+
+            <li class="timeline-item">
+              <h4 class="h4 timeline-item-title">Game Developer | Totality Corp</h4>
+              <span>July 2021 — May 2024</span>
+              <p class="timeline-text">
+                Created a 5v5 multiplayer mobile game for IOS and Android using Unity3D and C#. Engineered multiplayer features including matchmaking, lobbies, and network synchronization. Developed avatar customization system and worked with various multiplayer services.
+              </p>
+            </li>
+
+            <li class="timeline-item">
+              <h4 class="h4 timeline-item-title">Game Developer Intern | Totality Corp</h4>
+              <span>Feb 2021 — July 2021</span>
+              <p class="timeline-text">
+                Contributed to character animation implementation, gained hands-on experience in UI development, and acquired knowledge of game programming patterns and SOLID principles.
+              </p>
+            </li>
+
+          </ol>
+
+        </section>
+
+        <section class="skill">
+
+          <h3 class="h3 skills-title">My skills</h3>
+
+          <ul class="skills-list content-card">
+
+            <li class="skills-item">
+              <div class="title-wrapper">
+                <h5 class="h5">Programming Languages</h5>
+                <data value="90">90%</data>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 90%;"></div>
+              </div>
+              <p class="timeline-text">C#, Python, C/C++, JavaScript</p>
+            </li>
+
+            <li class="skills-item">
+              <div class="title-wrapper">
+                <h5 class="h5">Game Engines</h5>
+                <data value="95">95%</data>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 95%;"></div>
+              </div>
+              <p class="timeline-text">Unity, Unreal, Godot</p>
+            </li>
+
+            <li class="skills-item">
+              <div class="title-wrapper">
+                <h5 class="h5">DevOps & API Tools</h5>
+                <data value="85">85%</data>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 85%;"></div>
+              </div>
+              <p class="timeline-text">Git, Docker, Postman</p>
+            </li>
+
+            <li class="skills-item">
+              <div class="title-wrapper">
+                <h5 class="h5">Other Skills</h5>
+                <data value="90">90%</data>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 90%;"></div>
+              </div>
+              <p class="timeline-text">OOP, SOLID, Design Patterns, Debugging, Unit testing</p>
+            </li>
+
+          </ul>
+
+        </section>
+
+      </article>
+
+
+
+
+
+      <!--
+        - #PORTFOLIO
+      -->
+
+      <article class="portfolio" data-page="portfolio">
+
+        <header>
+          <h2 class="h2 article-title">Portfolio</h2>
+        </header>
+
+        <section class="projects">
+
+          <ul class="filter-list">
+
+            <li class="filter-item">
+              <button class="active" data-filter-btn>All</button>
+            </li>
+
+            <li class="filter-item">
+              <button data-filter-btn>Professional</button>
+            </li>
+            <li class="filter-item">
+              <button data-filter-btn>Personal</button>
+            </li>
+
+          </ul>
+
+          <div class="filter-select-box">
+
+            <button class="filter-select" data-select>
+
+              <div class="select-value" data-selecct-value>Select category</div>
+
+              <div class="select-icon">
+                <ion-icon name="chevron-down"></ion-icon>
+              </div>
+
+            </button>
+
+            <ul class="select-list">
+
+              <li class="select-item">
+                <button data-select-item>All</button>
+              </li>
+
+              <li class="select-item">
+                <button data-select-item>Professional</button>
+              </li>
+
+              <li class="select-item">
+                <button data-select-item>Personal</button>
+              </li>
+
+
+            </ul>
+
+          </div>
+
+          <ul class="project-list">
+            <li class="project-item active" data-filter-item data-category="professional">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/Thumbnails/RPSThumbnail.png" alt="Rock Paper Scissor: Origins" loading="lazy">
+                </figure>
+                <h3 class="project-title">Rock Paper Scissor: Origins</h3>
+                <p class="project-category">Professional</p>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="professional">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/Thumbnails/ZionverseThumbnail.png" alt="Zionverse" loading="lazy">
+                </figure>
+                <h3 class="project-title">Zionverse</h3>
+                <p class="project-category">Professional</p>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="professional">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./attached_assets/6MYYo47iuLM-HD.jpg" alt="RannBhumi" loading="lazy">
+                </figure>
+                <h3 class="project-title">RannBhumi</h3>
+                <p class="project-category">Professional</p>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="personal">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/Thumbnails/FIThumbnail2.png" alt="Flying Infinite" loading="lazy">
+                </figure>
+                <h3 class="project-title">Flying Infinite</h3>
+                <p class="project-category">Personal</p>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="personal">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/Thumbnails/CCThumbnail.png" alt="Character Controller" loading="lazy">
+                </figure>
+                <h3 class="project-title">Character Controller</h3>
+                <p class="project-category">Personal</p>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="personal">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/Thumbnails/DOTSThumbnail.png" alt="Unity DOTS RogueLite" loading="lazy">
+                </figure>
+                <h3 class="project-title">Unity DOTS RogueLite</h3>
+                <p class="project-category">Personal</p>
+              </a>
+            </li>
+
+            
+          </ul>
+
+        </section>
+
+      </article>
+
+
+
+
+
+      
+
+
+
+
+
+      <!--
+        - #CONTACT
+      -->
+
+      <article class="contact" data-page="contact">
+
+        <header>
+          <h2 class="h2 article-title">Contact</h2>
+        </header>
+
+        <section class="mapbox" data-mapbox>
+          <figure>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d242118.14199614953!2d73.72287827089839!3d18.524564576736914!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf2e67461101%3A0x828d43bf9d9ee343!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1681997233972!5m2!1sen!2sin"
+              width="400" height="300" loading="lazy"></iframe>
+          </figure>
+        </section>
+
+        <section class="contact-form">
+
+          <h3 class="h3 form-title">Contact</h3>
+            <div class="contact-details" style="color: #333; font-family: 'Poppins', sans-serif; line-height: 1.6;">
+              <p class="contact-title" style="font-weight: 600; color: #717171;"><strong>Name:</strong></p>
+              <p class="contact-link" style="color: #d2d2d2;">Shubham Solanke</p>
+              <p class="contact-title" style="font-weight: 600; color: #717171;"><strong>Email:</strong></p>
+              <a href="mailto:shubham1solanke@gmail.com" class="contact-link" style="color: #007bff; text-decoration: none;">shubham1solanke@gmail.com</a>
+              <p class="contact-title" style="font-weight: 600; color: #717171;"><strong>Contact Number:</strong></p>
+              <a href="tel:+919890590954" class="contact-link" style="color: #007bff; text-decoration: none;">+91 989 059 0954</a>
+            </div>
+          
+
+        </section>
+
+      </article>
+
+    </div>
+
+  </main>
+
+
+
+
+
+
+  <!--
+    - custom js link
+  -->
+  <script src="./assets/js/script.js"></script>
+
+  <!--
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>
