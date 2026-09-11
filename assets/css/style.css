@@ -24,38 +24,38 @@
   /* gradient */
 
   --bg-gradient-onyx: linear-gradient(to bottom right,
-      hsl(240, 1%, 25%) 3%,
-      hsl(0, 0%, 19%) 97%);
+      hsl(0, 0%, 100%) 3%,
+      hsl(0, 0%, 95%) 97%);
   --bg-gradient-jet: linear-gradient(to bottom right,
-      hsla(240, 1%, 18%, 0.251) 0%,
-      hsla(240, 2%, 11%, 0) 100%), hsl(240, 2%, 13%);
+      hsla(0, 0%, 100%, 0.8) 0%,
+      hsla(0, 0%, 98%, 0.4) 100%), hsl(0, 0%, 96%);
   --bg-gradient-yellow-1: linear-gradient(to bottom right,
-      hsl(45, 100%, 71%) 0%,
-      hsla(36, 100%, 69%, 0) 50%);
+      hsl(210, 100%, 60%) 0%,
+      hsla(210, 100%, 60%, 0) 50%);
   --bg-gradient-yellow-2: linear-gradient(135deg,
-      hsla(45, 100%, 71%, 0.251) 0%,
-      hsla(35, 100%, 68%, 0) 59.86%), hsl(240, 2%, 13%);
+      hsla(210, 100%, 60%, 0.251) 0%,
+      hsla(210, 100%, 60%, 0) 59.86%), hsl(0, 0%, 96%);
   --border-gradient-onyx: linear-gradient(to bottom right,
-      hsl(0, 0%, 25%) 0%,
-      hsla(0, 0%, 25%, 0) 50%);
+      hsl(0, 0%, 80%) 0%,
+      hsla(0, 0%, 80%, 0) 50%);
   --text-gradient-yellow: linear-gradient(to right,
-      hsl(45, 100%, 72%),
-      hsl(35, 100%, 68%));
+      hsl(210, 100%, 60%),
+      hsl(250, 100%, 65%));
 
   /* solid */
 
-  --jet: hsl(0, 0%, 22%);
-  --onyx: hsl(240, 1%, 17%);
-  --eerie-black-1: hsl(240, 2%, 13%);
-  --eerie-black-2: hsl(240, 2%, 12%);
-  --smoky-black: hsl(0, 0%, 7%);
-  --white-1: hsl(0, 0%, 100%);
-  --white-2: hsl(0, 0%, 98%);
-  --orange-yellow-crayola: hsl(45, 100%, 72%);
-  --vegas-gold: hsl(45, 54%, 58%);
-  --light-gray: hsl(0, 0%, 84%);
-  --light-gray-70: hsla(0, 0%, 84%, 0.7);
-  --bittersweet-shimmer: hsl(0, 43%, 51%);
+  --jet: hsl(0, 0%, 85%);
+  --onyx: hsl(0, 0%, 92%);
+  --eerie-black-1: hsl(0, 0%, 96%);
+  --eerie-black-2: hsla(0, 0%, 100%, 0.85); /* added alpha for transparency over canvas */
+  --smoky-black: hsl(0, 0%, 20%);
+  --white-1: hsl(0, 0%, 20%);
+  --white-2: hsl(0, 0%, 35%);
+  --orange-yellow-crayola: hsl(210, 100%, 60%);
+  --vegas-gold: hsl(210, 80%, 50%);
+  --light-gray: hsl(0, 0%, 45%);
+  --light-gray-70: hsla(0, 0%, 45%, 0.7);
+  --bittersweet-shimmer: hsl(250, 100%, 65%);
 
   /**
    * typography
@@ -84,11 +84,11 @@
    * shadow
    */
 
-  --shadow-1: -4px 8px 24px hsla(0, 0%, 0%, 0.25);
-  --shadow-2: 0 16px 30px hsla(0, 0%, 0%, 0.25);
-  --shadow-3: 0 16px 40px hsla(0, 0%, 0%, 0.25);
-  --shadow-4: 0 25px 50px hsla(0, 0%, 0%, 0.15);
-  --shadow-5: 0 24px 80px hsla(0, 0%, 0%, 0.25);
+  --shadow-1: -4px 8px 24px hsla(0, 0%, 0%, 0.1);
+  --shadow-2: 0 16px 30px hsla(0, 0%, 0%, 0.1);
+  --shadow-3: 0 16px 40px hsla(0, 0%, 0%, 0.1);
+  --shadow-4: 0 25px 50px hsla(0, 0%, 0%, 0.05);
+  --shadow-5: 0 24px 80px hsla(0, 0%, 0%, 0.1);
 
   /**
    * transition
@@ -162,7 +162,7 @@ html {
 }
 
 body {
-  background: var(--smoky-black);
+  background: var(--onyx); /* Set explicitly to a light color from palette */
 }
 
 
@@ -176,6 +176,7 @@ body {
 .sidebar,
 article {
   background: var(--eerie-black-2);
+  backdrop-filter: blur(10px);
   border: 1px solid var(--jet);
   border-radius: 20px;
   padding: 15px;
@@ -498,7 +499,7 @@ main {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: hsla(240, 1%, 17%, 0.75);
+  background: hsla(0, 0%, 100%, 0.75);
   backdrop-filter: blur(10px);
   border: 1px solid var(--jet);
   border-radius: 12px 12px 0 0;
@@ -589,6 +590,7 @@ main {
   background: var(--bg-gradient-jet);
   border-radius: inherit;
   z-index: -1;
+  opacity: 0.5;
 }
 
 .service-icon-box {
@@ -708,7 +710,7 @@ main {
   left: 0;
   width: 100%;
   height: 100vh;
-  background: rgba(0, 0, 0, 1);
+  background: rgba(200, 200, 200, 0.8);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -725,6 +727,7 @@ main {
 
 .testimonials-modal {
   background: var(--eerie-black-2);
+  backdrop-filter: blur(10px);
   position: relative;
   padding: 15px;
   margin: 15px 12px;
@@ -1166,6 +1169,7 @@ main {
 
 .portfolio-modal-container .testimonials-modal {
   background: var(--eerie-black-2);
+  backdrop-filter: blur(10px);
   max-width: 1200px;
   width: 95%;
   margin: 20px;
@@ -1269,6 +1273,7 @@ main {
   border-radius: inherit;
   background: var(--eerie-black-1);
   z-index: -1;
+  opacity: 0.5;
 }
 
 .blog-banner-box {
@@ -2115,19 +2120,20 @@ textarea.form-input::-webkit-resizer {
   }
 
   body::-webkit-scrollbar-track {
-    background: var(--smoky-black);
+    background: transparent;
   }
 
   body::-webkit-scrollbar-thumb {
-    border: 5px solid var(--smoky-black);
-    background: hsla(0, 0%, 100%, 0.1);
+    border: 5px solid transparent;
+    background: hsla(0, 0%, 0%, 0.2);
     border-radius: 20px;
-    box-shadow: inset 1px 1px 0 hsla(0, 0%, 100%, 0.11),
-      inset -1px -1px 0 hsla(0, 0%, 100%, 0.11);
+    background-clip: padding-box;
   }
 
   body::-webkit-scrollbar-thumb:hover {
-    background: hsla(0, 0%, 100%, 0.15);
+    background: hsla(0, 0%, 0%, 0.4);
+    border: 5px solid transparent;
+    background-clip: padding-box;
   }
 
   body::-webkit-scrollbar-button {
