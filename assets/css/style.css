@@ -47,7 +47,7 @@
   --jet: hsl(0, 0%, 85%);
   --onyx: hsl(0, 0%, 92%);
   --eerie-black-1: hsl(0, 0%, 96%);
-  --eerie-black-2: hsla(0, 0%, 100%, 0.85); /* added alpha for transparency over canvas */
+  --eerie-black-2: hsl(0, 0%, 100%);
   --smoky-black: hsl(0, 0%, 20%);
   --white-1: hsl(0, 0%, 20%);
   --white-2: hsl(0, 0%, 35%);
@@ -176,7 +176,6 @@ body {
 .sidebar,
 article {
   background: var(--eerie-black-2);
-  backdrop-filter: blur(10px);
   border: 1px solid var(--jet);
   border-radius: 20px;
   padding: 15px;
@@ -499,8 +498,7 @@ main {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: hsla(0, 0%, 100%, 0.75);
-  backdrop-filter: blur(10px);
+  background: var(--eerie-black-2);
   border: 1px solid var(--jet);
   border-radius: 12px 12px 0 0;
   box-shadow: var(--shadow-2);
@@ -576,37 +574,49 @@ main {
 
 .service-item {
   position: relative;
-  background: var(--border-gradient-onyx);
-  padding: 20px;
+  background: var(--eerie-black-1);
+  padding: 25px;
   border-radius: 14px;
   box-shadow: var(--shadow-2);
   z-index: 1;
+  transition: var(--transition-2);
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  border: 1px solid var(--jet);
 }
 
-.service-item::before {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  background: var(--bg-gradient-jet);
-  border-radius: inherit;
-  z-index: -1;
-  opacity: 0.5;
+.service-item:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-3);
+  border-color: var(--orange-yellow-crayola);
 }
 
 .service-icon-box {
-  margin-bottom: 10px;
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: hsla(210, 100%, 60%, 0.1); /* light blue accent tint */
+  border-radius: 12px;
 }
 
 .service-icon-box img {
-  margin: auto;
+  width: 30px;
+  height: 30px;
+  filter: brightness(0) saturate(100%) invert(48%) sepia(85%) saturate(3015%) hue-rotate(190deg) brightness(101%) contrast(101%); /* Apply blue tint to SVG if it's black/white */
 }
 
 .service-content-box {
-  text-align: center;
+  text-align: left;
 }
 
 .service-item-title {
   margin-bottom: 7px;
+  font-size: var(--fs-4);
+  color: var(--white-1);
 }
 
 .service-item-text {
@@ -727,7 +737,6 @@ main {
 
 .testimonials-modal {
   background: var(--eerie-black-2);
-  backdrop-filter: blur(10px);
   position: relative;
   padding: 15px;
   margin: 15px 12px;
@@ -1169,7 +1178,6 @@ main {
 
 .portfolio-modal-container .testimonials-modal {
   background: var(--eerie-black-2);
-  backdrop-filter: blur(10px);
   max-width: 1200px;
   width: 95%;
   margin: 20px;
@@ -1671,20 +1679,7 @@ textarea.form-input::-webkit-resizer {
   /* service */
 
   .service-item {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 18px;
     padding: 30px;
-  }
-
-  .service-icon-box {
-    margin-bottom: 0;
-    margin-top: 5px;
-  }
-
-  .service-content-box {
-    text-align: left;
   }
 
   /* testimonials */
