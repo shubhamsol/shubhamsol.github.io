@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Time Tracker & Analytics</title>
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="./assets/images/logo.ico" type="image/x-icon">
+
+  <!-- Custom CSS links -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="./assets/css/study-tracker.css">
+
+  <!-- Google font link -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <main>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" data-sidebar>
+      <div class="sidebar-info">
+        <figure class="avatar-box">
+          <img src="./assets/images/Avatar.png" alt="Profile Avatar" width="80">
+        </figure>
+
+        <div class="info-content">
+          <h1 class="name" title="Shubham Solanke">Shubham Solanke</h1>
+          <p class="title">Study & Focus Dashboard</p>
+        </div>
+
+        <button class="info_more-btn" data-sidebar-btn>
+          <span>Show Contacts</span>
+          <ion-icon name="chevron-down"></ion-icon>
+        </button>
+      </div>
+
+      <div class="sidebar-info_more">
+        <div class="separator"></div>
+
+        <ul class="contacts-list">
+          <li class="contact-item">
+            <div class="icon-box">
+              <ion-icon name="time-outline"></ion-icon>
+            </div>
+            <div class="contact-info">
+              <p class="contact-title">Tracker Mode</p>
+              <p class="contact-link">Persistent Local Data</p>
+            </div>
+          </li>
+
+          <li class="contact-item">
+            <div class="icon-box">
+              <ion-icon name="save-outline"></ion-icon>
+            </div>
+            <div class="contact-info">
+              <p class="contact-title">Storage Path</p>
+              <p class="contact-link" style="font-size: 11px;">browser.localStorage</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="separator"></div>
+
+        <ul class="social-list">
+          <li class="social-item">
+            <a href="index.html" class="social-link" title="Back to Main Portfolio">
+              <ion-icon name="arrow-back-outline"></ion-icon>
+            </a>
+          </li>
+          <li class="social-item">
+            <a href="https://github.com/shubhamsol" target="_blank" class="social-link">
+              <ion-icon name="logo-github"></ion-icon>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+      <!-- NAVBAR -->
+      <nav class="navbar">
+        <ul class="navbar-list">
+          <li class="navbar-item">
+            <a href="index.html" class="navbar-link">Portfolio</a>
+          </li>
+          <li class="navbar-item">
+            <button class="navbar-link active" data-tracker-tab="timer">Timer</button>
+          </li>
+          <li class="navbar-item">
+            <button class="navbar-link" data-tracker-tab="analytics">Analytics</button>
+          </li>
+          <li class="navbar-item">
+            <button class="navbar-link" data-tracker-tab="history">History</button>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- SECTION 1: TIMER & LOGGING -->
+      <article class="study-article active" data-tracker-page="timer">
+        <header class="header-with-actions">
+          <h2 class="h2 article-title">Study Time Tracker</h2>
+          <div class="mode-badge">
+            <span class="status-dot"></span>
+            <span id="storage-status-text">Persistent Storage Ready</span>
+          </div>
+        </header>
+
+        <!-- Timer Card -->
+        <section class="timer-section content-card">
+          <div class="preset-buttons">
+            <button class="preset-btn active" data-preset="stopwatch">Stopwatch</button>
+            <button class="preset-btn" data-preset="25">25m Pomodoro</button>
+            <button class="preset-btn" data-preset="50">50m Deep Work</button>
+            <button class="preset-btn" data-preset="custom">Custom Countdown</button>
+          </div>
+
+          <div class="timer-display-wrapper">
+            <div class="timer-display" id="timer-display">00:00:00</div>
+            <p class="timer-status-label" id="timer-status-label">Ready to start session</p>
+          </div>
+
+          <!-- Session Metadata Form -->
+          <div class="session-form-grid">
+            <div class="form-group">
+              <label for="study-subject" class="form-label">Subject</label>
+              <select id="study-subject" class="form-input custom-select">
+                <option value="Game Development">Game Development</option>
+                <option value="Programming">Programming (C# / Python / JS)</option>
+                <option value="Mathematics">Mathematics & Physics</option>
+                <option value="3D Design & Art">3D Design & Art</option>
+                <option value="General Reading">General Reading</option>
+                <option value="Other">Other Subject</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="study-activity" class="form-label">Activity Type</label>
+              <select id="study-activity" class="form-input custom-select">
+                <option value="Coding">Coding / Development</option>
+                <option value="Reading">Reading & Documentation</option>
+                <option value="Practice">Practice & Problem Solving</option>
+                <option value="Lecture">Lecture / Course</option>
+                <option value="Project">Project Work</option>
+              </select>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="study-notes" class="form-label">Session Notes / Goal (Optional)</label>
+              <input type="text" id="study-notes" class="form-input" placeholder="e.g., Implemented pathfinding algorithm">
+            </div>
+          </div>
+
+          <!-- Control Buttons -->
+          <div class="timer-controls">
+            <button id="btn-start" class="btn-control btn-start">
+              <ion-icon name="play-outline"></ion-icon> Start
+            </button>
+            <button id="btn-pause" class="btn-control btn-pause" disabled>
+              <ion-icon name="pause-outline"></ion-icon> Pause
+            </button>
+            <button id="btn-save" class="btn-control btn-save" disabled>
+              <ion-icon name="checkmark-done-outline"></ion-icon> Save Session
+            </button>
+            <button id="btn-reset" class="btn-control btn-reset">
+              <ion-icon name="refresh-outline"></ion-icon> Reset
+            </button>
+          </div>
+        </section>
+
+        <!-- Manual Entry Accordion / Card -->
+        <section class="manual-entry-section content-card" style="margin-top: 25px;">
+          <div class="section-header-clickable" id="toggle-manual-entry">
+            <h3 class="h3"><ion-icon name="add-circle-outline"></ion-icon> Add Manual Session Log</h3>
+            <ion-icon name="chevron-down-outline" id="manual-chevron"></ion-icon>
+          </div>
+
+          <form id="manual-log-form" class="manual-form hidden" style="margin-top: 15px;">
+            <div class="session-form-grid">
+              <div class="form-group">
+                <label for="manual-subject" class="form-label">Subject</label>
+                <select id="manual-subject" class="form-input custom-select">
+                  <option value="Game Development">Game Development</option>
+                  <option value="Programming">Programming</option>
+                  <option value="Mathematics">Mathematics & Physics</option>
+                  <option value="3D Design & Art">3D Design & Art</option>
+                  <option value="General Reading">General Reading</option>
+                  <option value="Other">Other Subject</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="manual-activity" class="form-label">Activity Type</label>
+                <select id="manual-activity" class="form-input custom-select">
+                  <option value="Coding">Coding / Development</option>
+                  <option value="Reading">Reading & Documentation</option>
+                  <option value="Practice">Practice & Problem Solving</option>
+                  <option value="Lecture">Lecture / Course</option>
+                  <option value="Project">Project Work</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="manual-date" class="form-label">Date</label>
+                <input type="date" id="manual-date" class="form-input">
+              </div>
+
+              <div class="form-group">
+                <label for="manual-duration" class="form-label">Duration (Minutes)</label>
+                <input type="number" id="manual-duration" class="form-input" min="1" max="1440" placeholder="e.g. 45">
+              </div>
+
+              <div class="form-group full-width">
+                <label for="manual-notes" class="form-label">Notes</label>
+                <input type="text" id="manual-notes" class="form-input" placeholder="What did you study?">
+              </div>
+            </div>
+
+            <button type="submit" class="form-btn" style="margin-top: 15px;">Log Session</button>
+          </form>
+        </section>
+      </article>
+
+      <!-- SECTION 2: ANALYTICS -->
+      <article class="study-article" data-tracker-page="analytics">
+        <header>
+          <h2 class="h2 article-title">Analytics & Study Insights</h2>
+        </header>
+
+        <!-- Stats Overview Cards -->
+        <section class="stats-overview-grid">
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <ion-icon name="hourglass-outline"></ion-icon>
+            </div>
+            <div class="stat-info">
+              <p class="stat-label">Total Time Studied</p>
+              <p class="stat-value" id="stat-total-time">0h 0m</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <ion-icon name="today-outline"></ion-icon>
+            </div>
+            <div class="stat-info">
+              <p class="stat-label">Studied Today</p>
+              <p class="stat-value" id="stat-today-time">0h 0m</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <ion-icon name="calendar-outline"></ion-icon>
+            </div>
+            <div class="stat-info">
+              <p class="stat-label">This Week</p>
+              <p class="stat-value" id="stat-week-time">0h 0m</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <ion-icon name="flame-outline"></ion-icon>
+            </div>
+            <div class="stat-info">
+              <p class="stat-label">Day Streak</p>
+              <p class="stat-value" id="stat-streak">0 Days</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Charts & Breakdowns Grid -->
+        <section class="analytics-grid" style="margin-top: 25px;">
+          <!-- Subject Breakdown -->
+          <div class="content-card analytics-card">
+            <h3 class="h3 card-title"><ion-icon name="pie-chart-outline"></ion-icon> Subject Breakdown</h3>
+            <div id="subject-progress-list" class="progress-bars-container">
+              <p class="empty-msg">No study data logged yet.</p>
+            </div>
+          </div>
+
+          <!-- Weekly Daily Bar Chart -->
+          <div class="content-card analytics-card">
+            <h3 class="h3 card-title"><ion-icon name="bar-chart-outline"></ion-icon> Past 7 Days Activity</h3>
+            <div id="weekly-bar-chart" class="bar-chart-container">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- SECTION 3: HISTORY & LOGS -->
+      <article class="study-article" data-tracker-page="history">
+        <header class="header-with-actions">
+          <h2 class="h2 article-title">Session History</h2>
+          <div class="history-actions">
+            <button id="btn-export-json" class="btn-action" title="Export study sessions to JSON file">
+              <ion-icon name="download-outline"></ion-icon> Export JSON
+            </button>
+            <label for="import-json-input" class="btn-action" title="Import study sessions from JSON file">
+              <ion-icon name="cloud-upload-outline"></ion-icon> Import
+            </label>
+            <input type="file" id="import-json-input" accept=".json" style="display:none;">
+            <button id="btn-clear-history" class="btn-action danger" title="Clear all history">
+              <ion-icon name="trash-outline"></ion-icon> Clear All
+            </button>
+          </div>
+        </header>
+
+        <section class="history-filter-bar">
+          <div class="filter-group">
+            <label for="history-subject-filter" class="form-label">Filter by Subject:</label>
+            <select id="history-subject-filter" class="form-input custom-select">
+              <option value="ALL">All Subjects</option>
+              <option value="Game Development">Game Development</option>
+              <option value="Programming">Programming</option>
+              <option value="Mathematics">Mathematics & Physics</option>
+              <option value="3D Design & Art">3D Design & Art</option>
+              <option value="General Reading">General Reading</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="history-count" id="history-count-text">0 total sessions logged</div>
+        </section>
+
+        <!-- History List / Table -->
+        <section class="history-list-container content-card">
+          <div id="history-items-wrapper">
+            <p class="empty-msg">No study sessions recorded yet. Start a timer or log a manual session!</p>
+          </div>
+        </section>
+      </article>
+
+    </div>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="./assets/js/study-tracker.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>
