@@ -77,7 +77,6 @@ const el = {
   pages: document.querySelectorAll('[data-p2p-page]'),
   badges: document.querySelectorAll('[data-status-badge]'),
   chatUnread: $('chat-unread'),
-  filesPending: $('files-pending'),
 
   name: $('display-name'),
   lobby: $('p2p-lobby'),
@@ -97,18 +96,16 @@ const el = {
   qrBox: $('qr-box'),
   error: $('connect-error'),
 
+  chatCard: $('chat-card'),
   chatLog: $('chat-log'),
   chatEmpty: $('chat-empty'),
   typing: $('typing-indicator'),
   chatForm: $('chat-form'),
   chatInput: $('chat-input'),
   chatSend: $('chat-send'),
-
-  dropZone: $('drop-zone'),
-  dropSub: $('drop-sub'),
+  attachBtn: $('chat-attach'),
   fileInput: $('file-input'),
-  transferList: $('transfer-list'),
-  transfersEmpty: $('transfers-empty'),
+  dropOverlay: $('drop-overlay'),
 };
 
 // ---------------------------------------------------------------------------
@@ -227,10 +224,13 @@ function showTab(name) {
 function updateBadges() {
   el.chatUnread.textContent = state.unread;
   el.chatUnread.classList.toggle('hidden', state.unread === 0);
+}
 
-  const pending = [...state.incoming.values()].filter((t) => t.status === 'offered').length;
-  el.filesPending.textContent = pending;
-  el.filesPending.classList.toggle('hidden', pending === 0);
+function bumpUnread() {
+  if (state.activeTab !== 'chat' || document.hidden) {
+    state.unread++;
+    updateBadges();
+  }
 }
 
 function setStatus(stateName, text) {
@@ -243,10 +243,11 @@ function setStatus(stateName, text) {
   el.chatInput.disabled = !connected;
   el.chatSend.disabled = !connected;
   el.fileInput.disabled = !connected;
-  el.dropZone.classList.toggle('disabled', !connected);
-  el.dropSub.textContent = connected
-    ? `Files go straight to ${peerName()}. They must accept each one.`
-    : 'Connect to a peer first';
+  el.attachBtn.disabled = !connected;
+  el.chatInput.placeholder = connected
+    ? 'Type a message, or drop files here…'
+    : 'Connect to a peer to start chatting';
+  if (!connected) el.dropOverlay.classList.add('hidden');
 }
 
 function showError(message) {
@@ -620,10 +621,7 @@ function handleControl(msg) {
       const ts = Number.isFinite(msg.ts) ? Math.min(msg.ts, Date.now()) : Date.now();
       hideTyping();
       chatMessage(text, false, ts);
-      if (state.activeTab !== 'chat' || document.hidden) {
-        state.unread++;
-        updateBadges();
-      }
+      bumpUnread();
       break;
     }
     case 'typing':
@@ -909,8 +907,7 @@ function onFileOffer(msg) {
   }
 
   renderTransfer(transfer);
-  systemMessage(`${peerName()} wants to send you “${transfer.name}” (${formatBytes(size)}). See the Files tab.`);
-  updateBadges();
+  bumpUnread();
 }
 
 function acceptIncoming(t) {
@@ -1092,8 +1089,14 @@ function renderTransfer(t, note) {
     t.node.querySelector('.transfer-name').textContent = t.name;
     t.node.querySelector('.transfer-name').title = t.name;
     t.node.querySelector('.transfer-size').textContent = formatBytes(t.size);
-    el.transfersEmpty.classList.add('hidden');
-    el.transferList.prepend(t.node);
+
+    const wrap = document.createElement('div');
+    wrap.className = `chat-msg ${t.direction === 'out' ? 'mine' : 'theirs'}`;
+    const meta = document.createElement('span');
+    meta.className = 'chat-meta';
+    meta.textContent = `${t.direction === 'out' ? 'You' : peerName()} · ${formatTime(Date.now())}`;
+    wrap.append(t.node, meta);
+    appendToLog(wrap);
   }
 
   if (note !== undefined) t.note = note;
@@ -1132,6 +1135,8 @@ function renderTransfer(t, note) {
       const img = document.createElement('img');
       img.className = 'transfer-preview';
       img.alt = t.name;
+      const stick = el.chatLog.scrollHeight - el.chatLog.scrollTop - el.chatLog.clientHeight < 80;
+      img.addEventListener('load', () => { if (stick) el.chatLog.scrollTop = el.chatLog.scrollHeight; });
       img.src = t.url;
       t.node.appendChild(img);
     }
@@ -1193,28 +1198,48 @@ function init() {
     }
   });
 
-  // Files
+  // Files: "+" button, drag & drop onto the chat, or paste
+  el.attachBtn.addEventListener('click', () => {
+    if (isConnected()) el.fileInput.click();
+  });
   el.fileInput.addEventListener('change', () => {
     offerFiles(el.fileInput.files);
     el.fileInput.value = '';
   });
-  el.dropZone.addEventListener('click', (e) => {
-    if (!isConnected()) e.preventDefault();
+  el.chatInput.addEventListener('paste', (e) => {
+    const files = e.clipboardData && e.clipboardData.files;
+    if (isConnected() && files && files.length) {
+      e.preventDefault();
+      offerFiles(files);
+    }
   });
-  ['dragenter', 'dragover'].forEach((type) => el.dropZone.addEventListener(type, (e) => {
+
+  const hasFiles = (e) => e.dataTransfer && [...e.dataTransfer.types].includes('Files');
+  let dragDepth = 0;
+  window.addEventListener('dragenter', (e) => {
+    if (!hasFiles(e)) return;
     e.preventDefault();
-    if (isConnected()) el.dropZone.classList.add('dragover');
-  }));
-  ['dragleave', 'dragend', 'drop'].forEach((type) => el.dropZone.addEventListener(type, () => {
-    el.dropZone.classList.remove('dragover');
-  }));
-  el.dropZone.addEventListener('drop', (e) => {
+    dragDepth++;
+    if (isConnected()) {
+      if (state.activeTab !== 'chat') showTab('chat');
+      el.dropOverlay.classList.remove('hidden');
+    }
+  });
+  window.addEventListener('dragleave', (e) => {
+    if (!hasFiles(e)) return;
+    dragDepth = Math.max(0, dragDepth - 1);
+    if (dragDepth === 0) el.dropOverlay.classList.add('hidden');
+  });
+  window.addEventListener('dragover', (e) => {
+    e.preventDefault(); // also stops a missed drop from navigating away
+    if (e.dataTransfer) e.dataTransfer.dropEffect = isConnected() ? 'copy' : 'none';
+  });
+  window.addEventListener('drop', (e) => {
     e.preventDefault();
+    dragDepth = 0;
+    el.dropOverlay.classList.add('hidden');
     if (isConnected() && e.dataTransfer && e.dataTransfer.files.length) offerFiles(e.dataTransfer.files);
   });
-  // Don't let a missed drop navigate away from the page.
-  window.addEventListener('dragover', (e) => e.preventDefault());
-  window.addEventListener('drop', (e) => e.preventDefault());
 
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden && state.activeTab === 'chat') {

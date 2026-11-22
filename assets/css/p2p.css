@@ -391,51 +391,65 @@
   font-size: 20px;
 }
 
-/* Files */
-.drop-zone {
+.chat-attach {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 35px 15px;
-  border: 2px dashed var(--jet);
-  border-radius: 14px;
-  text-align: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--jet);
+  background: var(--eerie-black-1);
+  color: var(--orange-yellow-crayola);
+  font-size: 24px;
   cursor: pointer;
   transition: var(--transition-1);
 }
 
-.drop-zone ion-icon {
-  font-size: 40px;
-  color: var(--orange-yellow-crayola);
-}
-
-.drop-zone:hover,
-.drop-zone.dragover {
+.chat-attach:hover:not(:disabled) {
   border-color: var(--orange-yellow-crayola);
-  background: hsla(210, 100%, 60%, 0.06);
+  background: hsla(210, 100%, 60%, 0.08);
+  transform: rotate(90deg);
 }
 
-.drop-zone.disabled {
-  opacity: 0.55;
+.chat-attach:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-.drop-title {
-  color: var(--white-2);
+/* Drag & drop overlay over the chat */
+.drop-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 2px dashed var(--orange-yellow-crayola);
+  border-radius: inherit;
+  background: hsla(210, 100%, 97%, 0.92);
+  color: var(--orange-yellow-crayola);
   font-weight: var(--fw-500);
-  font-size: var(--fs-6);
+  font-size: var(--fs-5);
+  pointer-events: none;
 }
 
-.drop-sub {
-  color: var(--light-gray);
-  font-size: var(--fs-8);
+.drop-overlay ion-icon {
+  font-size: 44px;
 }
 
+/* File transfers, shown as chat messages */
 .transfer-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.chat-msg .transfer-item {
+  width: min(340px, 70vw);
 }
 
 .transfer-item {
