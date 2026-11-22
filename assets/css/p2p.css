@@ -286,6 +286,7 @@
 
 .chat-log {
   height: 55vh;
+  height: 55dvh;
   min-height: 260px;
   max-height: 520px;
   overflow-y: auto;
@@ -324,6 +325,21 @@
   background: var(--orange-yellow-crayola);
   color: #fff;
   border-bottom-right-radius: 4px;
+}
+
+.chat-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  overflow-wrap: anywhere;
+}
+
+.chat-msg.theirs .chat-link {
+  color: var(--orange-yellow-crayola);
+}
+
+.chat-link:hover {
+  text-decoration-thickness: 2px;
 }
 
 .chat-msg.theirs .chat-bubble {
@@ -556,5 +572,23 @@
 
   .chat-msg {
     max-width: 90%;
+  }
+}
+
+/* iOS Safari zooms the page when a focused field's text is under 16px.
+   Use 16px on touch devices so tapping an input doesn't zoom. */
+@media (hover: none) and (pointer: coarse) {
+  .p2p-article .form-input,
+  .p2p-article .chat-input {
+    font-size: 16px;
+  }
+
+  /* Keyboard open: give the space to the chat instead of the bottom navbar. */
+  body.keyboard-open .navbar {
+    display: none;
+  }
+
+  body.keyboard-open main {
+    margin-bottom: 15px;
   }
 }
