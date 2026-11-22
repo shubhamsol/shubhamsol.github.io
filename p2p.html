@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P2P Share — Chat & File Transfer</title>
+  <meta name="description" content="Peer-to-peer chat and file sharing in the browser over encrypted WebRTC. No uploads, no accounts.">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="./assets/images/logo.ico" type="image/x-icon">
+
+  <!-- Custom CSS links -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="./assets/css/p2p.css">
+
+  <!-- Google font link -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <main>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" data-sidebar>
+      <div class="sidebar-info">
+        <figure class="avatar-box">
+          <img src="./assets/images/Avatar.png" alt="Profile Avatar" width="80">
+        </figure>
+
+        <div class="info-content">
+          <h1 class="name" title="Shubham Solanke">Shubham Solanke</h1>
+          <p class="title">P2P Share</p>
+        </div>
+
+        <button class="info_more-btn" data-sidebar-btn>
+          <span>Show Details</span>
+          <ion-icon name="chevron-down"></ion-icon>
+        </button>
+      </div>
+
+      <div class="sidebar-info_more">
+        <div class="separator"></div>
+
+        <ul class="contacts-list">
+          <li class="contact-item">
+            <div class="icon-box">
+              <ion-icon name="git-network-outline"></ion-icon>
+            </div>
+            <div class="contact-info">
+              <p class="contact-title">Transport</p>
+              <p class="contact-link">Direct WebRTC</p>
+            </div>
+          </li>
+
+          <li class="contact-item">
+            <div class="icon-box">
+              <ion-icon name="lock-closed-outline"></ion-icon>
+            </div>
+            <div class="contact-info">
+              <p class="contact-title">Encryption</p>
+              <p class="contact-link">DTLS, end to end</p>
+            </div>
+          </li>
+
+          <li class="contact-item">
+            <div class="icon-box">
+              <ion-icon name="cloud-offline-outline"></ion-icon>
+            </div>
+            <div class="contact-info">
+              <p class="contact-title">Server Storage</p>
+              <p class="contact-link">None, handshake only</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="separator"></div>
+
+        <ul class="social-list">
+          <li class="social-item">
+            <a href="index.html" class="social-link" title="Back to Main Portfolio">
+              <ion-icon name="arrow-back-outline"></ion-icon>
+            </a>
+          </li>
+          <li class="social-item">
+            <a href="https://github.com/shubhamsol" target="_blank" rel="noopener" class="social-link">
+              <ion-icon name="logo-github"></ion-icon>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+      <!-- NAVBAR -->
+      <nav class="navbar">
+        <ul class="navbar-list">
+          <li class="navbar-item">
+            <a href="index.html" class="navbar-link">Portfolio</a>
+          </li>
+          <li class="navbar-item">
+            <button class="navbar-link active" data-p2p-tab="connect">Connect</button>
+          </li>
+          <li class="navbar-item">
+            <button class="navbar-link" data-p2p-tab="chat">Chat <span class="tab-badge hidden" id="chat-unread"></span></button>
+          </li>
+          <li class="navbar-item">
+            <button class="navbar-link" data-p2p-tab="files">Files <span class="tab-badge hidden" id="files-pending"></span></button>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- SECTION 1: CONNECT -->
+      <article class="p2p-article active" data-p2p-page="connect">
+        <header class="header-with-actions">
+          <h2 class="h2 article-title">P2P Share</h2>
+          <div class="mode-badge" data-status-badge>
+            <span class="status-dot"></span>
+            <span class="status-text">Not connected</span>
+          </div>
+        </header>
+
+        <p class="p2p-intro">
+          Chat and send files straight to another browser. Nothing is uploaded: the data goes
+          directly between the two devices over an encrypted WebRTC channel.
+        </p>
+
+        <!-- Display name -->
+        <section class="content-card p2p-card">
+          <h3 class="h3 card-title"><ion-icon name="person-circle-outline"></ion-icon> Your Name</h3>
+          <input type="text" id="display-name" class="form-input" maxlength="40" placeholder="e.g. Shubham's laptop" autocomplete="nickname">
+        </section>
+
+        <!-- Lobby: create / join -->
+        <section class="p2p-lobby-grid" id="p2p-lobby">
+          <div class="content-card p2p-card">
+            <h3 class="h3 card-title"><ion-icon name="add-circle-outline"></ion-icon> Create a Room</h3>
+            <p class="card-help">Get a room code and share it with the person you want to connect to.</p>
+            <button id="btn-create" class="form-btn">
+              <ion-icon name="radio-outline"></ion-icon>
+              <span>Create Room</span>
+            </button>
+          </div>
+
+          <div class="content-card p2p-card">
+            <h3 class="h3 card-title"><ion-icon name="enter-outline"></ion-icon> Join a Room</h3>
+            <p class="card-help">Enter the 6-character code you were given.</p>
+            <form id="join-form" class="join-form">
+              <input type="text" id="join-code" class="form-input code-input" maxlength="6" placeholder="AB12CD" autocomplete="off" autocapitalize="characters" spellcheck="false" required>
+              <button type="submit" id="btn-join" class="form-btn">
+                <ion-icon name="link-outline"></ion-icon>
+                <span>Join</span>
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- Active session -->
+        <section class="content-card p2p-card hidden" id="p2p-session">
+          <h3 class="h3 card-title"><ion-icon name="pulse-outline"></ion-icon> Room</h3>
+
+          <div class="session-grid">
+            <div class="session-info">
+              <p class="session-label">Room code</p>
+              <p class="room-code" id="room-code">------</p>
+
+              <div class="session-actions" id="share-actions">
+                <button class="btn-action" id="btn-copy-code"><ion-icon name="copy-outline"></ion-icon> Copy code</button>
+                <button class="btn-action" id="btn-copy-link"><ion-icon name="share-social-outline"></ion-icon> Copy invite link</button>
+              </div>
+
+              <ul class="session-meta">
+                <li><span>You are</span><strong id="session-role">—</strong></li>
+                <li><span>Peer</span><strong id="session-peer">Waiting…</strong></li>
+                <li><span>Route</span><strong id="session-route">—</strong></li>
+              </ul>
+
+              <button class="btn-action danger" id="btn-leave"><ion-icon name="exit-outline"></ion-icon> Leave room</button>
+            </div>
+
+            <div class="qr-box" id="qr-box" aria-label="QR code for the invite link"></div>
+          </div>
+        </section>
+
+        <p class="connect-error hidden" id="connect-error" role="alert"></p>
+      </article>
+
+      <!-- SECTION 2: CHAT -->
+      <article class="p2p-article" data-p2p-page="chat">
+        <header class="header-with-actions">
+          <h2 class="h2 article-title">Chat</h2>
+          <div class="mode-badge" data-status-badge>
+            <span class="status-dot"></span>
+            <span class="status-text">Not connected</span>
+          </div>
+        </header>
+
+        <section class="content-card chat-card">
+          <div class="chat-log has-scrollbar" id="chat-log" aria-live="polite">
+            <p class="empty-msg" id="chat-empty">No messages yet. Connect to a peer to start chatting.</p>
+          </div>
+          <p class="typing-indicator" id="typing-indicator">&nbsp;</p>
+          <form class="chat-form" id="chat-form">
+            <textarea id="chat-input" class="form-input chat-input" rows="1" maxlength="5000" placeholder="Type a message… (Enter to send, Shift+Enter for a new line)" disabled></textarea>
+            <button type="submit" class="form-btn chat-send" id="chat-send" disabled title="Send">
+              <ion-icon name="paper-plane-outline"></ion-icon>
+            </button>
+          </form>
+        </section>
+      </article>
+
+      <!-- SECTION 3: FILES -->
+      <article class="p2p-article" data-p2p-page="files">
+        <header class="header-with-actions">
+          <h2 class="h2 article-title">Files</h2>
+          <div class="mode-badge" data-status-badge>
+            <span class="status-dot"></span>
+            <span class="status-text">Not connected</span>
+          </div>
+        </header>
+
+        <section class="content-card p2p-card">
+          <label class="drop-zone" id="drop-zone" for="file-input">
+            <ion-icon name="cloud-upload-outline"></ion-icon>
+            <span class="drop-title">Drop files here or click to choose</span>
+            <span class="drop-sub" id="drop-sub">Connect to a peer first</span>
+          </label>
+          <input type="file" id="file-input" class="hidden" multiple disabled>
+        </section>
+
+        <section class="content-card p2p-card transfers-card">
+          <h3 class="h3 card-title"><ion-icon name="swap-vertical-outline"></ion-icon> Transfers</h3>
+          <div id="transfer-list" class="transfer-list">
+            <p class="empty-msg" id="transfers-empty">No transfers yet.</p>
+          </div>
+        </section>
+      </article>
+
+    </div>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="./assets/js/p2p.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>
