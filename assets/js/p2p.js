@@ -673,13 +673,54 @@ function appendToLog(node) {
   if (nearBottom) el.chatLog.scrollTop = el.chatLog.scrollHeight;
 }
 
+const URL_PATTERN = /\b(?:https?:\/\/|www\.)[^\s<>"']+/gi;
+const TRAILING_PUNCTUATION = /[.,;:!?'"*_~]+$/;
+
+// Fills `node` with `text`, turning http(s) URLs into links. Built from DOM
+// nodes (never innerHTML), and only http/https targets are allowed.
+function renderTextWithLinks(node, text) {
+  let last = 0;
+  for (const match of text.matchAll(URL_PATTERN)) {
+    let raw = match[0];
+    // Drop trailing punctuation and unbalanced closing brackets ("see (https://x.com).")
+    for (;;) {
+      const before = raw;
+      raw = raw.replace(TRAILING_PUNCTUATION, '');
+      for (const [open, close] of [['(', ')'], ['[', ']'], ['{', '}']]) {
+        if (raw.endsWith(close) && raw.split(open).length < raw.split(close).length) raw = raw.slice(0, -1);
+      }
+      if (raw === before) break;
+    }
+
+    let href;
+    try {
+      const url = new URL(/^www\./i.test(raw) ? `https://${raw}` : raw);
+      if (url.protocol !== 'http:' && url.protocol !== 'https:') continue;
+      href = url.href;
+    } catch {
+      continue;
+    }
+
+    if (match.index > last) node.append(text.slice(last, match.index));
+    const a = document.createElement('a');
+    a.href = href;
+    a.textContent = raw;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer nofollow';
+    a.className = 'chat-link';
+    node.append(a);
+    last = match.index + raw.length;
+  }
+  if (last < text.length) node.append(text.slice(last));
+}
+
 function chatMessage(text, mine, ts) {
   const wrap = document.createElement('div');
   wrap.className = `chat-msg ${mine ? 'mine' : 'theirs'}`;
 
   const bubble = document.createElement('div');
   bubble.className = 'chat-bubble';
-  bubble.textContent = text;
+  renderTextWithLinks(bubble, text);
 
   const meta = document.createElement('span');
   meta.className = 'chat-meta';
@@ -1196,6 +1237,20 @@ function init() {
       state.lastTypingSent = now;
       send({ type: 'typing' });
     }
+  });
+
+  // Touch devices: while typing, hide the bottom navbar so the on-screen
+  // keyboard doesn't squeeze the chat, and keep the newest messages in view.
+  const coarse = window.matchMedia('(hover: none) and (pointer: coarse)');
+  document.addEventListener('focusin', (e) => {
+    if (!coarse.matches || !e.target.matches('input[type="text"], textarea')) return;
+    document.body.classList.add('keyboard-open');
+    if (e.target === el.chatInput) {
+      setTimeout(() => { el.chatLog.scrollTop = el.chatLog.scrollHeight; }, 300);
+    }
+  });
+  document.addEventListener('focusout', () => {
+    document.body.classList.remove('keyboard-open');
   });
 
   // Files: "+" button, drag & drop onto the chat, or paste
